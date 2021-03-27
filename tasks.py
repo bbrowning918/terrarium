@@ -16,25 +16,40 @@ warm_sensor = Sensor(board.D18)
 cool_sensor = Sensor(board.D23)
 hide_sensor = Sensor(board.D24)
 
-reservoir = Reservoir(board.SCL, board.SDA, ADS.P0)
-
-# unused
-# 3_relay = Relay(board.D20)
-# 4_relay = Relay(board.D21)
+pump_reservoir = Reservoir(board.SCL, board.SDA, ADS.P0)
 
 @shared_task
-def run_10_sec():
-    signal.signal(signal.SIGINT, lamp_relay.exit)
-
-    lamp_on.apply_async()
-    lamp_off.apply_async(countdown=10)
-
+def take_reading():
     return {
         'timestamp': int(time.time()),
         'warm': warm_sensor.read(),
         'cool': cool_sensor.read(),
         'hide': hide_sensor.read(),
-        'water': reservoir.level(),
+        'water': pump_reservoir.level(),
+    }
+
+@shared_task
+def mist_10_sec():
+    signal.signal(signal.SIGINT, pump_relay.exit)
+
+    pump_on.apply_async()
+    pump_off.apply_async(countdown=10)
+
+
+@shared_task
+def pump_on():
+    pump_relay.on()
+    return {
+        'timestamp': int(time.time()),
+        'pump': True
+    }
+
+@shared_task
+def pump_off():
+    pump_relay.off()
+    return {
+        'timestamp': int(time.time()),
+        'pump': False
     }
 
 @shared_task
