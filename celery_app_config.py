@@ -7,6 +7,8 @@ imports = ('tasks',)
 result_backend ='redis://localhost:6379/1'
 result_expires = 604800
 
+timezone = 'Canada/Saskatchewan'
+
 beat_schedule = {
     'sensors_read': {
         'task': 'tasks.take_reading',
