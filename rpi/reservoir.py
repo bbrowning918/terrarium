@@ -1,7 +1,7 @@
-import board
 import busio
-import adafruit_ads1x15.ads1015 as ADS
+import adafruit_ads1x15.ads1015 as ads
 from adafruit_ads1x15.analog_in import AnalogIn
+
 
 class Reservoir:
     _level_sensor = None
@@ -11,8 +11,8 @@ class Reservoir:
     LENGTH_CM = 30
 
     def __init__(self, scl, sda, input_pin):
-        ads = ADS.ADS1015(busio.I2C(scl, sda))
-        self._level_sensor = AnalogIn(ads, input_pin)
+        ads1015 = ads.ADS1015(busio.I2C(scl, sda))
+        self._level_sensor = AnalogIn(ads1015, input_pin)
 
     def level(self):
         result = self._level_sensor

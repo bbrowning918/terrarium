@@ -1,5 +1,4 @@
-import board
-import digitalio 
+import digitalio
 
 
 class Relay:
