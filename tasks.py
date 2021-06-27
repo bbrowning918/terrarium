@@ -3,7 +3,7 @@ import signal
 import board
 import adafruit_ads1x15.ads1015 as ADS
 
-from celery import shared_task, chain
+from celery import shared_task
 
 from rpi.relay import Relay
 from rpi.sensor import Sensor
@@ -29,11 +29,11 @@ def take_reading():
     }
 
 @shared_task
-def mist_10_sec():
+def mist_burst(duration):
     signal.signal(signal.SIGINT, pump_relay.exit)
 
     pump_on.apply_async()
-    pump_off.apply_async(countdown=10)
+    pump_off.apply_async(countdown=duration)
 
 
 @shared_task
