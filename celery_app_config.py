@@ -4,8 +4,6 @@ broker_url = 'redis://localhost:6379/0'
 
 imports = ('tasks',)
 
-result_expires = 604800
-
 timezone = 'Canada/Saskatchewan'
 
 beat_schedule = {

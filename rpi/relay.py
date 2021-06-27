@@ -5,7 +5,7 @@ import digitalio
 class Relay:
     _relay = None
 
-    # wired as NO, relay closes when driven low/false
+    # wired as normally open, relay closes when driven low/false
     ON = False
     OFF = True
 
