@@ -22,24 +22,24 @@ event_handler = EventHandler()
 
 @shared_task
 def take_reading():
-    now = int(time.time())
+    now = time.time()
     event_handler.submit(
-        type='warm-sensor',
+        key='warm_sensor',
         timestamp=now,
         payload=warm_sensor.read()
     )
     event_handler.submit(
-        type='cool_sensor',
+        key='cool_sensor',
         timestamp=now,
         payload=cool_sensor.read()
     )
     event_handler.submit(
-        type='hide_sensor',
+        key='hide_sensor',
         timestamp=now,
         payload=hide_sensor.read()
     )
     event_handler.submit(
-        type='water_level',
+        key='water_level',
         timestamp=now,
         payload=pump_reservoir.level()
     )
@@ -56,7 +56,7 @@ def mist_burst(duration):
 def pump_on():
     pump_relay.on()
     event_handler.submit(
-        type='pump',
+        key='pump',
         timestamp=int(time.time()),
         payload={'on': True}
     )
@@ -65,8 +65,8 @@ def pump_on():
 def pump_off():
     pump_relay.off()
     event_handler.submit(
-        type='pump',
-        timestamp=int(time.time()),
+        key='pump',
+        timestamp=time.time(),
         payload={'on': False}
     )
 
@@ -74,8 +74,8 @@ def pump_off():
 def lamp_on():
     lamp_relay.on()
     event_handler.submit(
-        type='light',
-        timestamp=int(time.time()),
+        key='light',
+        timestamp=time.time(),
         payload={'on': True}
     )
 
@@ -83,7 +83,7 @@ def lamp_on():
 def lamp_off():
     lamp_relay.off()
     event_handler.submit(
-        type='light',
-        timestamp=int(time.time()),
+        key='light',
+        timestamp=time.time(),
         payload={'on': False}
     )

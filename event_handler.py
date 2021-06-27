@@ -1,6 +1,10 @@
 import os
 import boto3
 
+from botocore.exceptions import ClientError
+
+from decimal import Decimal
+
 from dotenv import load_dotenv
 
 
@@ -17,11 +21,19 @@ class EventHandler:
         )
         self.table = dynamodb.Table(os.environ.get('AWS_DYNAMO_TABLE_NAME'))
 
-    def submit(self, type, timestamp, payload={}):
-        self.table.put_item(
-            Item={
-                'type': type,
-                'timestamp':  timestamp,
-                **payload
-            }
-        )
+    def submit(self, key, timestamp, payload={}):
+        # cast floats
+        for k, v in payload.items():
+            if isinstance(v, float):
+                payload[k] = Decimal(F'{v}')
+
+        try:
+            self.table.put_item(
+                Item={
+                    'key': key,
+                    'timestamp': int(timestamp),
+                    **payload
+                }
+            )
+        except ClientError as e:
+            print(e.response['Error']['Message'])
