@@ -21,7 +21,10 @@ class EventHandler:
         )
         self.table = dynamodb.Table(os.environ.get('AWS_DYNAMO_TABLE_NAME'))
 
-    def submit(self, key, timestamp, payload={}):
+    def submit(self, key, timestamp, payload=None):
+        if payload is None:
+            payload = dict()
+
         # cast floats
         for k, v in payload.items():
             if isinstance(v, float):
