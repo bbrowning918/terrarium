@@ -17,7 +17,6 @@ ephem==3.7.7.1
 importlib-metadata==3.7.3
 jmespath==0.10.0
 kombu==5.0.2
-pkg-resources==0.0.0
 prompt-toolkit==3.0.17
 pyephem==9.99
 pyftdi==0.52.9
