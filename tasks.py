@@ -6,7 +6,8 @@ import adafruit_ads1x15.ads1015 as ADS
 from celery import shared_task
 
 from rpi import Relay, Reservoir, Sensor
-from .event_handler import EventHandler
+
+from event_handler import EventHandler
 
 lamp_relay = Relay(board.D12)
 pump_relay = Relay(board.D16)
